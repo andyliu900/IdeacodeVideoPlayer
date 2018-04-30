@@ -7,8 +7,53 @@
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="6ea11ad381cce5c5a8da5449f9e654e077ae040a">
+        sha1="69fa175b8c7293630ce5770cce4d68f51d6af166">
         <dex dex="/Users/randysu/GitLab/IdeacodeVideoPlayer/app/build/intermediates/pre-dexed/debug/classes_41088465d3b9eea1e00cbd3a07da8cdb64593faa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/randysu/.android/build-cache/1f7efd335daa9f028c84b262ef6f27b62a3b942f/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="af97b370908bdd22e3676b58f4c5a13fdc16d115">
+        <dex dex="/Users/randysu/GitLab/IdeacodeVideoPlayer/app/build/intermediates/pre-dexed/debug/classes_d6b78a7b80b84099cc65dfe4e80d580a9a3ad902.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/randysu/.android/build-cache/b3f6b254834320aca0e991a904787f3da46e786d/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b2618f4673a7a0ca967ef3643e197dd6ebae5006">
+        <dex dex="/Users/randysu/GitLab/IdeacodeVideoPlayer/app/build/intermediates/pre-dexed/debug/classes_f789a4855784257dab89a13a87a481b9d17f8ea0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/randysu/.android/build-cache/b20e21e7fed094b84ecf219e9c4bdf6778301126/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7557a832b17a74fa6713925b8d558b5df03fa96d">
+        <dex dex="/Users/randysu/GitLab/IdeacodeVideoPlayer/app/build/intermediates/pre-dexed/debug/classes_f2a44cb663e6eb023c945c1f5fc9ab61d3c8fcd8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/randysu/.android/build-cache/2198f3bd721efa8361752a34a561a5bade473351/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="97db049d49e0013977510c7b13e812d66533e596">
+        <dex dex="/Users/randysu/GitLab/IdeacodeVideoPlayer/app/build/intermediates/pre-dexed/debug/classes_7741d7664229d24edeee64505b1e21758cf70c40.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/randysu/.android/build-cache/10459df7918e138c05603367ba7ef750fb1afacc/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="721795a4b024d5cb1f94691e1efeb94b73f53317">
+        <dex dex="/Users/randysu/GitLab/IdeacodeVideoPlayer/app/build/intermediates/pre-dexed/debug/classes_41f17d547ce786b4562a6a871456c5d5f905905c.jar" />
     </item>
 
 </items>

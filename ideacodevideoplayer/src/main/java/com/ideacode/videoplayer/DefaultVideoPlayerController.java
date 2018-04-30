@@ -141,7 +141,7 @@ public class DefaultVideoPlayerController extends IdeacodeVideoController implem
     @Override
     public void setVideoPlayer(IIdeacodeVideoPlayer ideacodeVideoPlayer) {
         super.setVideoPlayer(ideacodeVideoPlayer);
-        mIdeacodeVideoPlayer.setUp(dataSourceUrl, null);
+//        mIdeacodeVideoPlayer.setUp(dataSourceUrl, null);
     }
 
     @Override
@@ -198,9 +198,14 @@ public class DefaultVideoPlayerController extends IdeacodeVideoController implem
         if (mIdeacodeVideoPlayer.isBuferingPaused() || mIdeacodeVideoPlayer.isPaused()) {
             mIdeacodeVideoPlayer.restart();
         }
-        long position = (long)(mIdeacodeVideoPlayer.getDuration() * seekBar.getProgress() / 100f);
-        mIdeacodeVideoPlayer.seekTo(position);
-        startDismissTopBottomTimer();
+        if (mIdeacodeVideoPlayer.getSignalType() == IdeacodeVideoPlayer.SIGNAL_TYPE_RES) {
+            long position = (long)(mIdeacodeVideoPlayer.getDuration() * seekBar.getProgress() / 100f);
+            mIdeacodeVideoPlayer.seekTo(position);
+            startDismissTopBottomTimer();
+        } else {
+            seekBar.setProgress(100);
+        }
+
     }
 
     @Override

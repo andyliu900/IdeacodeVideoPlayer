@@ -24,7 +24,7 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 /**
  * 播放器生命周器管理类
  * 可以设置MediaPlayer的类型，支持系统原生的MediaPlayer和IjkPlayer
- *
+ * <p>
  * Created by randysu on 2018/4/27.
  */
 
@@ -104,7 +104,18 @@ public class IdeacodeVideoPlayer extends FrameLayout
      */
     public static final int TYPE_NATIVE = 222;
 
+    /**
+     * 直播信号，不能seek
+     */
+    public static final int SIGNAL_TYPE_LIVE = 501;
+
+    /**
+     * 资源信号，可以seek
+     */
+    public static final int SIGNAL_TYPE_RES = 502;
+
     private int mPlayerType = TYPE_IJK;
+    private int mSignalType = SIGNAL_TYPE_RES;
     private int mCurrentState = STATE_IDLE;
     private int mCurrentMode = MODE_NORMAL;
 
@@ -220,6 +231,16 @@ public class IdeacodeVideoPlayer extends FrameLayout
     }
 
     @Override
+    public void setSigalType(int signalType) {
+        mSignalType = signalType;
+    }
+
+    @Override
+    public int getSignalType() {
+        return mSignalType;
+    }
+
+    @Override
     public void start() {
         if (mCurrentState == STATE_IDLE) {
             VideoPlayerManager.getsInstance().setCurrentVideoPlayer(this);
@@ -234,7 +255,7 @@ public class IdeacodeVideoPlayer extends FrameLayout
 
     private void initAudioManager() {
         if (mAudioManager == null) {
-            mAudioManager = (AudioManager)getContext().getSystemService(Context.AUDIO_SERVICE);
+            mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
             mAudioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
         }
     }
@@ -244,15 +265,17 @@ public class IdeacodeVideoPlayer extends FrameLayout
             switch (mPlayerType) {
                 case TYPE_NATIVE:
                     mMediaPlayer = new AndroidMediaPlayer();
-                   break;
-                case TYPE_IJK:
-                    mMediaPlayer = new IjkMediaPlayer();
-                    ((IjkMediaPlayer)mMediaPlayer).setOption(1, "analyzemaxduration", 100L);
-                    ((IjkMediaPlayer)mMediaPlayer).setOption(1, "probesize", 10240L);
-                    ((IjkMediaPlayer)mMediaPlayer).setOption(1, "flush_packets", 1L);
-                    ((IjkMediaPlayer)mMediaPlayer).setOption(4, "packet-buffering", 0L);
-                    ((IjkMediaPlayer)mMediaPlayer).setOption(4, "framedrop", 1L);
                     break;
+                case TYPE_IJK:
+                default:
+                    mMediaPlayer = new IjkMediaPlayer();
+                    ((IjkMediaPlayer) mMediaPlayer).setOption(1, "analyzemaxduration", 100L);
+                    ((IjkMediaPlayer) mMediaPlayer).setOption(1, "probesize", 10240L);
+                    ((IjkMediaPlayer) mMediaPlayer).setOption(1, "flush_packets", 1L);
+                    ((IjkMediaPlayer) mMediaPlayer).setOption(4, "packet-buffering", 0L);
+                    ((IjkMediaPlayer) mMediaPlayer).setOption(4, "framedrop", 1L);
+                    break;
+
             }
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         }
@@ -336,7 +359,7 @@ public class IdeacodeVideoPlayer extends FrameLayout
     @Override
     public void setSpeed(float speed) {
         if (mMediaPlayer instanceof IjkMediaPlayer) {
-            ((IjkMediaPlayer)mMediaPlayer).setSpeed(speed);
+            ((IjkMediaPlayer) mMediaPlayer).setSpeed(speed);
         } else {
             LogUtil.d("只有IjkPlayer才能设置播放速度");
         }
@@ -440,8 +463,8 @@ public class IdeacodeVideoPlayer extends FrameLayout
 
     @Override
     public float getSpeed(float speed) {
-        if (mMediaPlayer instanceof  IjkMediaPlayer) {
-            return ((IjkMediaPlayer)mMediaPlayer).getSpeed(speed);
+        if (mMediaPlayer instanceof IjkMediaPlayer) {
+            return ((IjkMediaPlayer) mMediaPlayer).getSpeed(speed);
         }
         return 0;
     }
@@ -449,7 +472,7 @@ public class IdeacodeVideoPlayer extends FrameLayout
     @Override
     public long getTcpSpeed() {
         if (mMediaPlayer instanceof IjkMediaPlayer) {
-            return ((IjkMediaPlayer)mMediaPlayer).getTcpSpeed();
+            return ((IjkMediaPlayer) mMediaPlayer).getTcpSpeed();
         }
         return 0;
     }
@@ -470,7 +493,7 @@ public class IdeacodeVideoPlayer extends FrameLayout
         VideoUtil.scanForActivity(mContext)
                 .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        ViewGroup contentView = (ViewGroup)VideoUtil.scanForActivity(mContext)
+        ViewGroup contentView = (ViewGroup) VideoUtil.scanForActivity(mContext)
                 .findViewById(android.R.id.content);
         if (mCurrentMode == MODE_TINY_WINDOW) {
             contentView.removeView(mContainer);
@@ -502,7 +525,7 @@ public class IdeacodeVideoPlayer extends FrameLayout
             VideoUtil.scanForActivity(mContext)
                     .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-            ViewGroup contentView = (ViewGroup)VideoUtil.scanForActivity(mContext)
+            ViewGroup contentView = (ViewGroup) VideoUtil.scanForActivity(mContext)
                     .findViewById(android.R.id.content);
             contentView.removeView(mContainer);
 
@@ -533,8 +556,8 @@ public class IdeacodeVideoPlayer extends FrameLayout
 
         // 长宽比为16：9
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                (int)(VideoUtil.getScreenWidth(mContext) * 0.6f),
-                (int)(VideoUtil.getScreenWidth(mContext) * 0.6f * 9f / 16f));
+                (int) (VideoUtil.getScreenWidth(mContext) * 0.6f),
+                (int) (VideoUtil.getScreenWidth(mContext) * 0.6f * 9f / 16f));
 
         params.gravity = Gravity.BOTTOM | Gravity.END;
         params.rightMargin = VideoUtil.dp2px(mContext, 8f);
@@ -628,13 +651,15 @@ public class IdeacodeVideoPlayer extends FrameLayout
             LogUtil.d("onPrepared ---- STATE_PREPARED");
             iMediaPlayer.start();
             // 从上次的保存位置播放
-            if (continueFromLastPosition) {
-                long savedPlayPosition = VideoUtil.getSavedPlayPosition(mContext, mUrl);
-                iMediaPlayer.seekTo(savedPlayPosition);
-            }
-            // 跳到指定位置播放
-            if (skipToPosition != 0) {
-                iMediaPlayer.seekTo(skipToPosition);
+            if (mSignalType == SIGNAL_TYPE_RES) {
+                if (continueFromLastPosition) {
+                    long savedPlayPosition = VideoUtil.getSavedPlayPosition(mContext, mUrl);
+                    iMediaPlayer.seekTo(savedPlayPosition);
+                }
+                // 跳到指定位置播放
+                if (skipToPosition != 0) {
+                    iMediaPlayer.seekTo(skipToPosition);
+                }
             }
         }
     };

@@ -14,14 +14,14 @@ import java.util.TimerTask;
 
 /**
  * 控制器抽象类
- *
+ * <p>
  * Created by randysu on 2018/4/29.
  */
 
 public abstract class IdeacodeVideoController extends FrameLayout implements View.OnTouchListener {
 
     private Context mContext;
-    protected  IIdeacodeVideoPlayer mIdeacodeVideoPlayer;
+    protected IIdeacodeVideoPlayer mIdeacodeVideoPlayer;
 
     private Timer mUpdateProgressTimer;
     private TimerTask mUpdateProgressTimerTask;
@@ -56,7 +56,7 @@ public abstract class IdeacodeVideoController extends FrameLayout implements Vie
 
     /**
      * 设置视频默认图片
-     *
+     * <p>
      * 当你用Android Studio和IntelliJ的时候，如果给标注了这些注解的方法传递错误类型的参数，那么IDE就会实时标记出来。
      *
      * @param resId
@@ -82,7 +82,7 @@ public abstract class IdeacodeVideoController extends FrameLayout implements Vie
      *
      * @param playState
      */
-    protected  abstract void onPlayStateChanged(int playState);
+    protected abstract void onPlayStateChanged(int playState);
 
     /**
      * 当播放器播放模式发生变化时，在此方法中更新不同模式的控制器界面
@@ -120,7 +120,6 @@ public abstract class IdeacodeVideoController extends FrameLayout implements Vie
         }
         mUpdateProgressTimer.schedule(mUpdateProgressTimerTask, 0, 1000);
     }
-
 
 
     /**
@@ -177,9 +176,13 @@ public abstract class IdeacodeVideoController extends FrameLayout implements Vie
                 if (!mNeedChangePosition && !mNeedChangeVolume && !mNeedChangeBrightness) {
                     // 只有在播放、暂停、缓冲的时候才能拖动改变位置、亮度、声音
                     if (absDetalX >= THRESHOLD) { // X轴数值改变调整视频播放位置
-                        cancelUpdateProgressTimer();
-                        mNeedChangePosition = true;
-                        mGestreDownPosition = mIdeacodeVideoPlayer.getCurrentPosition();
+                        // 只有资源信号才能seek
+                        if (mIdeacodeVideoPlayer.getSignalType() == IdeacodeVideoPlayer.SIGNAL_TYPE_RES) {
+
+                            cancelUpdateProgressTimer();
+                            mNeedChangePosition = true;
+                            mGestreDownPosition = mIdeacodeVideoPlayer.getCurrentPosition();
+                        }
                     } else if (absDetalY >= THRESHOLD) {  // Y轴数值改变调整视频的音量或亮度
                         if (mDownX < getWidth() * 0.5f) {
                             // 左侧改变亮度
@@ -197,9 +200,9 @@ public abstract class IdeacodeVideoController extends FrameLayout implements Vie
                 // 改变播放位置
                 if (mNeedChangePosition) {
                     long duration = mIdeacodeVideoPlayer.getDuration();
-                    long toPosition = (long)(mGestreDownPosition + duration * deltaX / getWidth());
+                    long toPosition = (long) (mGestreDownPosition + duration * deltaX / getWidth());
                     mNewPosition = Math.max(0, Math.min(duration, toPosition));
-                    int newPositionProgress = (int)(100f * mNewPosition / duration);
+                    int newPositionProgress = (int) (100f * mNewPosition / duration);
                     showChangePosition(duration, newPositionProgress);
                 }
 
@@ -214,7 +217,7 @@ public abstract class IdeacodeVideoController extends FrameLayout implements Vie
                             .getWindow().getAttributes();
                     params.screenBrightness = newBrightnessPercentage;
                     VideoUtil.scanForActivity(mContext).getWindow().setAttributes(params);
-                    int newBrightnessProgress = (int)(100f * newBrightnessPercentage);
+                    int newBrightnessProgress = (int) (100f * newBrightnessPercentage);
                     showChangeBrightness(newBrightnessProgress);
                 }
 
@@ -222,7 +225,7 @@ public abstract class IdeacodeVideoController extends FrameLayout implements Vie
                 if (mNeedChangeVolume) {
                     deltaY = -deltaY;
                     int maxVolume = mIdeacodeVideoPlayer.getMaxVolume();
-                    int deltaVolume = (int)(maxVolume * deltaY * 3 / getHeight());
+                    int deltaVolume = (int) (maxVolume * deltaY * 3 / getHeight());
                     int newVolume = mGestureDownVolume + deltaVolume;
                     newVolume = Math.max(0, Math.min(maxVolume, newVolume));
                     mIdeacodeVideoPlayer.setVolume(newVolume);
@@ -279,7 +282,6 @@ public abstract class IdeacodeVideoController extends FrameLayout implements Vie
     /**
      * 手势在右侧上下滑动改变音量后，手势up或cancel时，隐藏控制器中间的音量变化视图
      * 在手势ACTION_UP   ACTION_DOWN时调用
-     *
      */
     protected abstract void hideChangeVolume();
 

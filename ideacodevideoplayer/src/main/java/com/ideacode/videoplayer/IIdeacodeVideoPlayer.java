@@ -19,6 +19,21 @@ public interface IIdeacodeVideoPlayer {
     void setUp(String url, Map<String, String> header);
 
     /**
+     * 视频信号类型
+     * 直播类型
+     * 资源类型
+     *
+     * @param signalType
+     */
+    void setSigalType(int signalType);
+
+    /**
+     * 获得信号类型
+     * @return
+     */
+    int getSignalType();
+
+    /**
      * 开始播放
      */
     void start();
