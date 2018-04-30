@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/Users/randysu/GitLab/IdeacodeVideoPlayer/ideacodevideoplayer/build/intermediates/bundles/default/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6ea11ad381cce5c5a8da5449f9e654e077ae040a">
+        <dex dex="/Users/randysu/GitLab/IdeacodeVideoPlayer/app/build/intermediates/pre-dexed/debug/classes_41088465d3b9eea1e00cbd3a07da8cdb64593faa.jar" />
+    </item>
+
+</items>
