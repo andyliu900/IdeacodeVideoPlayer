@@ -1,1 +1,5 @@
 # IdeacodeVideoPlayer
+
+这是一个播放器的学习例子，该例子的核心编解码操作来自系统原生的AndroidMediaPlayer、IjkMediaPlayer，支持设置播放器的解码类型。
+
+例子主要解决的问题是视频组件UI交互、视频信号状态响应、视频生命周期管理等。
