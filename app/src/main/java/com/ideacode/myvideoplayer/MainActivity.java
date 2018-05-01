@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private IdeacodeVideoPlayer mp4VideoPlayer;
 
     // 直播信号
-    private String hksUrl = "http://acm.gg/jade.m3u8";
+    private String hksUrl = "rtmp://live.hkstv.hk.lxdns.com/live/hks";
 
     // 网络视频文件信号
     private String mp4Url = "http://jzvd.nathen.cn/1b61da23555d4ce28c805ea303711aa5/7a33ac2af276441bb4b9838f32d8d710-5287d2089db37e62345123a1be272f8b.mp4";
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         liveVideoPlayer.setSigalType(IdeacodeVideoPlayer.SIGNAL_TYPE_LIVE);
 
         DefaultVideoPlayerController controller = new DefaultVideoPlayerController(this);
-        controller.setTitle("高清翡翠台");
+        controller.setTitle("香港卫视");
         controller.setLenght(0);
         Glide.with(this)
                 .load("http://e.hiphotos.baidu.com/zhidao/pic/item/3bf33a87e950352af29733445b43fbf2b3118b83.jpg")

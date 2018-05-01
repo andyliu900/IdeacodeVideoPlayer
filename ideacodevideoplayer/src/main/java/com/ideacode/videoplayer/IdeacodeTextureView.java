@@ -105,8 +105,4 @@ public class IdeacodeTextureView extends TextureView {
         }
         setMeasuredDimension(width, height);
     }
-
-    public interface OnSizeMeasuredCallback {
-        void onSizeMeasuredCallBack(int width, int height);
-    }
 }
